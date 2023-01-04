@@ -1,5 +1,3 @@
-#!/bin/sh
-FROM ubuntu:18.04
-apt update
-apt install hugo -y
-make -f Makefile
+docker run --rm --tty --interactive --volume=$(pwd):/app --workdir=/app ubuntu:18.04 /bin/bash
+apt-get update && apt-get install -y hugo make
+make build
