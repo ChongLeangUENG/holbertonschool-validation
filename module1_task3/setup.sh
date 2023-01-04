@@ -1,4 +1,4 @@
-#!/bin/bash
-FROM ubuntu:18.04
-RUN apt-get update
-RUN apt-get install -y hugo make
+#!/bin/sh
+apt-get update
+apt-get install hugo -y
+make -f Makefile
