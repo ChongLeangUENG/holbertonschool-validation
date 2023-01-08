@@ -19,7 +19,7 @@ jobs:
       - name: build
         run: |
           cd module3_task1/
-          make hugo
+          make build
       - name: post
         run: |
           cd module3_task1/
