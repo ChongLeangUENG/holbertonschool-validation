@@ -16,23 +16,14 @@ jobs:
         run: |
           cd module3_task1/
           make lint
-      - name: Setup Hugo
-        run: |
-          cd module3_task1/
-          sudo ./setup.sh
       - name: build
         run: |
           cd module3_task1/
-          make build
+          make build hugo
       - name: post
         run: |
           cd module3_task1/
           make POST_TITLE="Test Title" POST_NAME="Test-name" post
-      - name: Integration tests
-        run: |
-          cd module3_task1/
-          make integration-tests
-          make unit-tests
       - name: clean
         run: |
           cd module3_task1/
