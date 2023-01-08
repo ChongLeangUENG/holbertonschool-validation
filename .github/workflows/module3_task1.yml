@@ -4,8 +4,13 @@ on:
   schedule:
     - cron: "0 3 30 * *"
 jobs:
+<<<<<<< Updated upstream
   check_build:
     runs-on: ubuntu-18.04
+=======
+  module3_task0:
+    runs-on: ubuntu-latest
+>>>>>>> Stashed changes
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
