@@ -10,6 +10,3 @@ curl -Lo install_hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.
 
 # Install the latest version of 'Hugo'
 apt-get install ./install_hugo.deb
-
-# Build the website
-make build
