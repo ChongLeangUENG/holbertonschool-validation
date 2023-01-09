@@ -17,8 +17,8 @@ jobs:
       - name: Install tools
         run: |
           cd module3_task1
-          chmod 755 setup.sh
-          ./setup.sh
+          chmod u+x setup.sh
+          sudo ./setup.sh
       - name: build
         run: |
           cd module3_task1/
