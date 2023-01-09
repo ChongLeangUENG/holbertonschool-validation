@@ -19,7 +19,7 @@ jobs:
       - name: lint
         run: |
           cd module3_task2/
-          make lint
+          sudo make lint
       - name: build
         run: |
           cd module3_task2/
