@@ -5,8 +5,6 @@ on:
       - main
   schedule:
     - cron: "0 0 * * *"
-    
-permissions: read-all
 
 jobs:
   module3_task0:
