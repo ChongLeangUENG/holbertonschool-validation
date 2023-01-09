@@ -26,7 +26,7 @@ jobs:
       - name: post
         run: |
           cd module3_task1/
-          make post
+          make POST_TITLE="Test" POST_NAME="name" post
       - name: clean
         run: |
           cd module3_task1/
