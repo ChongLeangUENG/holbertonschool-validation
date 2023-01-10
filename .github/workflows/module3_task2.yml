@@ -1,3 +1,4 @@
+---
 name: module3_task2
 on:
   push:
@@ -14,12 +15,11 @@ jobs:
       - name: Setup Hugo
         run: |
           cd module3_task2/
-          chmod u+x setup.sh
           sudo ./setup.sh
       - name: lint
         run: |
           cd module3_task2/
-          sudo make lint
+          make lint
       - name: build
         run: |
           cd module3_task2/
