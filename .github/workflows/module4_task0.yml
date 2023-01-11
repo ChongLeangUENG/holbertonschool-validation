@@ -16,25 +16,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Hugo
+      - name: Setup Golang
         run: |
-          cd module3_task5/
+          cd module4_task0/
           sudo ./setup.sh
       - name: lint
         run: |
-          cd module3_task5/
+          cd module4_task0/
           make lint
       - name: build
         run: |
-          cd module3_task5/
+          cd module4_task0/
           make build
       - name: post
         run: |
-          cd module3_task5/
+          cd module4_task0/
           make POST_TITLE="Test Title" POST_NAME="Test-name" post
       - name: Integration tests
         run: |
-          cd module3_task5/
+          cd module4_task0/
           make integration-tests
           make validate
           make unit-tests
@@ -45,18 +45,18 @@ jobs:
         with:
           tag_name: 1.0.1
           files: |
-            module3_task5/awesome-website.zip
-            module3_task5/DEPLOY.md
+            module4_task0/awesome-website.zip
+            module4_task0/DEPLOY.md
       - name: archive build
         if: ${{ success()}}
         uses: actions/upload-artifact@v3
         with:
           name: upload-package
-          path: module3_task5/awesome-website.zip
+          path: module4_task0/awesome-website.zip
       - name: deploy
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './module3_task5/dist'
+          publish-dir: './module4_task0/dist'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy: '🚀 Deployed on'
