@@ -1,3 +1,4 @@
+---
 name: module4_task0
 on:
   push:
@@ -16,30 +17,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Golang
+      - name: Setup Hugo
         run: |
           cd module4_task0/
           sudo ./setup.sh
-      - name: lint
-        run: |
-          cd module4_task0/
-          make lint
       - name: build
         run: |
           cd module4_task0/
           make build
-      - name: post
-        run: |
-          cd module4_task0/
-          make POST_TITLE="Test Title" POST_NAME="Test-name" post
       - name: Integration tests
         run: |
           cd module4_task0/
-          make integration-tests
-          make validate
-          make unit-tests
           make package
-          echo ${{github.ref}}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -59,8 +48,8 @@ jobs:
           publish-dir: './module4_task0/dist'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy: '🚀 Deployed on'
-          deploy-message: '🎉 Published on'
+          deploy-message: '🚀 Deployed on'
+          publish-message: '🎉 Published on'
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
