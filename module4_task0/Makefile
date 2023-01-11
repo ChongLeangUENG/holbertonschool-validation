@@ -4,7 +4,6 @@ SHELLCHECK=shellcheck
 
 build: ## Builds a new website
 	$(Publish)
-	touch awesome-api
 
 clean: ## Remove all files from folder dist
 	rm -r dist/*
@@ -27,15 +26,14 @@ integration-tests: ## server and check the localhost
 
 unit-tests: ## Runs different makefile recipes
 	make POST_TITLE='TEST' POST_NAME='this-is-a-test' post
-	make build
-	make clean
-	touch coverage-units.out
+	go build
+	go clean
 
 validate: ## Tests dir
 	pwd
 
 package: ## creates archive
-	make build
+	go build
 	zip awesome-website.zip dist/	
 
 help: ## Display the list of targets and their usage.
