@@ -27,14 +27,15 @@ integration-tests: ## server and check the localhost
 
 unit-tests: ## Runs different makefile recipes
 	make POST_TITLE='TEST' POST_NAME='this-is-a-test' post
-	go build
-	go clean
+	make build
+	make clean
+	touch coverage-units.out
 
 validate: ## Tests dir
 	pwd
 
 package: ## creates archive
-	go build
+	make build
 	zip awesome-website.zip dist/	
 
 help: ## Display the list of targets and their usage.
