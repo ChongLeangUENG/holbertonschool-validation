@@ -1,3 +1,3 @@
 module github.com/ChongLeangUENG/holbertonschool-validation
 
-go 1.15.8
+go 1.14
