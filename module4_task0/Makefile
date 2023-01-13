@@ -27,7 +27,7 @@ integration-tests: ## server and check the localhost
 	
 
 unit-tests: ## Runs different makefile recipes
-	make POST_TITLE='TEST' POST_NAME='this-is-a-test' post
+	make POST_TITLE='tests' POST_NAME='name' post
 	make build
 	make clean
 	touch coverage-units.out
