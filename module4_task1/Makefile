@@ -1,40 +1,49 @@
-build: ## Builds a new website
-	docker build -t docker .
 
-clean: ## Remove all files from folder dist
+build: ## Builds a new website
+	make docker_run docker_awesome docker_clean
+
+docker_clean: ## Remove all files from folder dist
 	rm -r dist/*
 
-awesome: ## Create file awesome-api
+docker_awesome: ## Create file awesome-api
 	touch awesome-api
 
-post: ## Create new post and using the sed command to modify the contents of a file.
-	hugo new posts/$(POST_NAME).md
+post: ## Create new post and using the sed command to modify the contents a file
+	$(Publish) new posts/$(POST_NAME).md
 	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
 
-lint: ## shellcheck setup
-	markdownlint README.md DEPLOY.md
-	shellcheck setup.sh >/dev/null 2>&1 || echo "Lint Failed"
+lint: ## shellcheck setup markdownlint README.md DEPLOY.md
+	ls
+
+build-docker: ## builds docker
+	docker build -t awesome:build ./build
+
+docker_run: ## Build and list contents of website / Hugo in an interactive shell
+	docker run -i awesome:build sh -c "hugo;ls ./dist"
 
 markdownlint: ## updated to lint the files README.md and DEPLOY.md
 	markdownlint README.md DEPLOY.md
 
 integration-tests: ## server and check the localhost
-	hugo
+	make docker_run docker_unit-tests
+
+docker_integration-tests: ## Create file coverage-integrations.out
 	touch coverage-integrations.out
-	ls dist/
-	
 
 unit-tests: ## Runs different makefile recipes
-	make build
-	make clean
+	make docker_run docker_unit-tests
+
+docker_unit-tests: ## Create file coverage-units.out
 	touch coverage-units.out
 
 validate: ## Tests dir
 	pwd
 
 package: ## creates archive
-	make build
-	zip awesome-website.zip dist/	
+	make docker_run compress
+
+compress:
+	zip awesome-website.zip dist/
 
 help: ## Display the list of targets and their usage.
 	cat Makefile | grep '##' | tr -d '##' | head -n -1
