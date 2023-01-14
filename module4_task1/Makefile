@@ -4,8 +4,11 @@ build: ## Builds a new website
 clean: ## Remove all files from folder dist
 	rm -r dist/*
 
+awesome: ## Create file awesome-api
+	touch awesome-api
+
 post: ## Create new post and using the sed command to modify the contents of a file.
-	$(Publish) new posts/$(POST_NAME).md
+	hugo new posts/$(POST_NAME).md
 	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
 
 lint: ## shellcheck setup
