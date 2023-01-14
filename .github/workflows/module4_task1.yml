@@ -1,5 +1,5 @@
 ---
-name: module4_task0
+name: module4_task1
 on:
   push:
     branches:
@@ -17,18 +17,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup
-        run: |
-          cd module4_task0/
-          ./setup.sh
-      - name: build Dockerfile
+      - name: docker
         run: |
           cd module4_task1/
+          make build-docker
           make build
-      - name: Integration tests
-        run: |
-          cd module4_task1/
-          make package
+          make lint
+          make unit-tests
+          make integration-tests
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -49,7 +45,6 @@ jobs:
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: '🚀 Deployed on'
-          publish-message: '🎉 Published on'
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
