@@ -1,6 +1,6 @@
 
 build: ## Builds a new website
-	make docker_run docker_awesome docker_clean
+	docker build -t docker .
 
 docker_clean: ## Remove all files from folder dist
 	rm -r dist/*
@@ -14,9 +14,6 @@ post: ## Create new post and using the sed command to modify the contents a file
 
 lint: ## shellcheck setup markdownlint README.md DEPLOY.md
 	ls
-
-build-docker: ## builds docker
-	docker build -t awesome:build ./build
 
 docker_run: ## Build and list contents of website / Hugo in an interactive shell
 	docker run -i awesome:build sh -c "hugo;ls ./dist"
