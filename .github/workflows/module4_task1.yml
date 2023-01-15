@@ -25,6 +25,8 @@ jobs:
           make lint
           make unit-tests
           make integration-tests
+          make package
+          echo ${{github.ref}}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
