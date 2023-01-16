@@ -1,22 +1,23 @@
 help:	## Show this
-	@sed -ne '/@sed/!s/## //p' Makefile
+	sed -ne '/@sed/!s/## //p' Makefile
 
 .PHONY: build
 build:	## Generate the website from the markdown language
-	@hugo
-	@touch awesome-api
+	sudo apt install ./hugo.deb
+	hugo
+	touch awesome-api
 
 clean:	## Delete the website done with build command
-	@rm -rf dist/*
+	rm -rf dist/*
 
 post:	## Create a new blog post from the environment variables POST_TITLE and POST_NAME
-	@hugo new posts/$(POST_NAME).md
-	@sed -i 's#title: ".*"#title: "$(POST_TITLE)"#g' content/posts/$(POST_NAME).md
+	hugo new posts/$(POST_NAME).md
+	sed -i 's#title: ".*"#title: "$(POST_TITLE)"#g' content/posts/$(POST_NAME).md
 
 package: ## Create a package
-	@make build
-	@mkdir -p dist
-	@zip awesome-website.zip dist
+	make build
+	mkdir -p dist
+	zip awesome-website.zip dist
 
 lint: ## lint with markdown
 	apt install curl -y
@@ -27,18 +28,16 @@ lint: ## lint with markdown
 	markdownlint DEPLOY.md
 
 unit-tests: ## not implemented yet
-	@touch coverage-units.out
+	touch coverage-units.out
 
 validate: ## not implemented yet
-	@ls dist
+	ls dist
 
 integration-tests: ## not implemented yet
-	@touch coverage-integrations.out
+	touch coverage-integrations.out
 
 .PHONY: build-docker
 build-docker: ## build docker debian
-	@docker build -t "awesome:build" ./build
+	docker build -t "awesome:build" ./build
 
 .PHONY: build-dependencies
-build-dependencies: ## build dependencies for ubuntu
-	@sudo apt install ./hugo.deb
