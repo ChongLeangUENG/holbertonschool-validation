@@ -3,7 +3,7 @@ help:	## Show this
 
 .PHONY: build
 build:	## Generate the website from the markdown language
-	sudo apt install ./hugo.deb
+	brew install hugo
 	hugo
 	touch awesome-api
 
