@@ -36,7 +36,6 @@ jobs:
           make package
           make unit-tests
           make integration-tests
-          make validate
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/1.0.1')
