@@ -30,9 +30,6 @@ lint: ## lint with markdown
 unit-tests: ## not implemented yet
 	touch coverage-units.out
 
-validate: ## not implemented yet
-	ls dist
-
 integration-tests: ## not implemented yet
 	touch coverage-integrations.out
 
