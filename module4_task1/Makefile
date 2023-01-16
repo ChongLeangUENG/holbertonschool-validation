@@ -1,43 +1,45 @@
-# Define variables
-Publish=hugo
-SHELLCHECK=shellcheck
+help:	## Show this
+	@sed -ne '/@sed/!s/## //p' Makefile
 
 .PHONY: build
+build:	## Generate the website from the markdown language
+	@sudo apt install ./hugo.deb
+	@hugo
+	@touch awesome-api
 
-build: ## Publish the new version the site
-	hugo
+clean:	## Delete the website done with build command
+	@rm -rf dist/*
 
-build-docker: ## Create Image from Dockerfile
-	docker build -t "awesome:build" ./build --no-cache
+post:	## Create a new blog post from the environment variables POST_TITLE and POST_NAME
+	@hugo new posts/$(POST_NAME).md
+	@sed -i 's#title: ".*"#title: "$(POST_TITLE)"#g' content/posts/$(POST_NAME).md
 
-clean: ## Remove all files from folder dist
-	rm -r dist/*
+package: ## Create a package
+	@make build
+	@mkdir -p dist
+	@zip awesome-website.zip dist
 
-post: ## Create new post and using the sed command to modify the contents of a file.
-	$(Publish) new posts/$(POST_NAME).md
-	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
+lint: ## lint with markdown
+	apt install curl -y
+	curl --silent --location https://deb.nodesource.com/setup_16.x | bash -
+	apt install nodejs -y
+	npm install -g markdownlint-cli 1>&2
+	markdownlint README.md
+	markdownlint DEPLOY.md
 
-lint: ## shellcheck setup markdownlint README.md DEPLOY.md
-	ls
-markdownlint: ## updated to lint the files README.md and DEPLOY.md
-	markdownlint README.md DEPLOY.md
+unit-tests: ## not implemented yet
+	@touch coverage-units.out
 
-integration-tests: ## server and check the localhost
-	touch coverage-integrations.out
+validate: ## not implemented yet
+	@ls dist
 
-unit-tests: ## Runs different makefile recipes
-	touch coverage-units.out
+integration-tests: ## not implemented yet
+	@touch coverage-integrations.out
 
-validate: ## Tests dir
-	pwd
+.PHONY: build-docker
+build-docker: ## build docker debian
+	@docker build -t "awesome:build" ./build
 
-package: ## creates archive docker run awesome:build sh -c "hugo; make package"
-	mkdir dist
-	zip awesome-website.zip dist/
-
-test:
-	touch coverage-units.out
-	touch coverage-integrations.out
-
-help: ## Display the list of targets and their usage.
-	cat Makefile | grep '##' | tr -d '##' | head -n -1
+.PHONY: build-dependencies
+build-dependencies: ## build dependencies for ubuntu
+	@sudo apt install ./hugo.deb
