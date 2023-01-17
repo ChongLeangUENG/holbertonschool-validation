@@ -1,10 +1,7 @@
 ---
-env:
-  GH_TOKEN: ${{ github.token }}
 name: module4_task1
-"on":
+on:
   push:
-    tags: "1.0.1"
     branches:
       - main
   schedule:
@@ -17,7 +14,7 @@ permissions: read-all
 jobs:
   builds:
     permissions: write-all
-    name: job1
+    name: Building With A Custom Docker Image
     runs-on: ubuntu-18.04
 
     steps:
@@ -25,53 +22,47 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: install hugo
-        run: make -C module4_task1 build-dependencies
-      - name: install markdown
-        run: npm install -g markdownlint-cli
-      - name: Validate Makefile help
+      - name: Hugo
         run: |
           cd module4_task1
+          make build-tools
+      - name: Markdownlint
+        run: npm install -g markdownlint-cli
+      - name: Check Makefile
+        run: |
+          cd module4_task1/
           make build
-          make package
           make unit-tests
           make integration-tests
+          make validate
+          make build-docker
+          make test
+          make package
+          echo ${{github.ref}}
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/1.0.1')
         with:
+          tag_name: 1.0.1
           files: |
-            awesome-website.zip
-            DEPLOY.md
-          body: |
-            # First project
-
-            What is in the archive and how to unarchive it? zip
-            What are the commands to start and stop the application? tag
-            How to customize where the application logs are written?
-            How to verify that the application is runing (healthcheck)?
-      - run: gh release create v1.0.1 --title "v1.0.1" --notes DEPLOY.md\
-            2>/dev/null || echo "OK"
-      - name: release drafter
-        uses: release-drafter/release-drafter@v5
+            module4_task1/awesome-website.zip
+            module4_task1/DEPLOY.md
+      - name: archive build
+        if: ${{ success()}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload-package
+          path: module4_task1/awesome-website.zip
       - name: deploy
-        uses: nwtgck/actions-netlify@v1
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './module4_task1/dist'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: '🚀 Deployed on'
+          enable-pull-request-comment: true
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        with:
-          deploy-message: "Deploy from GitHub Actions"
-          publish-dir: "module4_task1/dist"
-          production-branch: main
-          enable-pull-request-comment: true
-          overwrites-pull-request-comment: true
-          enable-commit-comment: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: build docker
-        run: |
-          cd module4_task1
-          make build-docker
-      - name: test make
-        run: |
-          docker run -i "awesome:build" make -C module4_task1 clean build \
-          unit-tests integration-tests
+        timeout-minutes: 1
